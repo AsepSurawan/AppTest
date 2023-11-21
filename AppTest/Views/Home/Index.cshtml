@@ -1,0 +1,112 @@
+﻿@using AppTest.Services.Models
+@{
+    ViewData["Title"] = "Home Page";
+    var data = ViewBag.Data as List<DataCollectionGeneratorRequest>;
+}
+
+<div class="text-center">
+    <div class="row">
+        <div class="col-md-12" >
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nama</th>
+                        <th>Gender</th>
+                        <th>Hobi</th>
+                        <th>Umur</th>
+                    </tr>
+                </thead>
+                <tbody class="body-table">
+                    @* @foreach (var item in data)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.GenderName</td>
+                            <td>@item.HobbyName</td>
+                            <td>@item.Age</td>
+                        </tr>
+                    } *@
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-12 mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <button class="btn btn-success" id="genrate">Generate Data</button>
+
+                </div>
+
+                <div class="col-md-6">
+                    <button class="btn btn-info" id="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+          
+            var param_request;
+           //get data from tbl genrate
+            $("#genrate").on("click", function () {
+                
+                //table.clear().draw();
+                RequestData('GET', '/Home/getData', `#to-type-ticket`, null, null, function (data) {
+                    console.log(data);
+                    $(".body-table").remove();
+                   
+                    var dom = "";
+                    if (data.length!=0) {
+                        data.forEach(function (item) {
+                            dom += `<tr class="data-body">
+                                        <td class="nama">`+item.name+` </td>
+                                        <td class="gender">`+item.genderName+` </td>
+                                        <td class="hobi">`+item.hobbyName+` </td>
+                                        <td class=>`+item.age+` </td>
+                                    </tr>`;
+                        });
+                        param_request = data;
+
+                        console.log("param request",param_request);
+                    }
+                    $(".table").append(`<tbody class="body-table">` + dom + `</tbody>`);
+
+
+                    //table.rows.add(data); // Add new data
+                    $(".table").DataTable();
+
+                    
+                });
+            });
+
+
+            $("#submit").on("click", function () {
+                
+                var param = [];
+                param_request.forEach(function (item) 
+                {
+                    param.push(
+                        {
+                              Name: item.name,
+                              GenderId: item.genderId,
+                              GenderName: item.genderName,
+                              HobbyId: item.hobbyId,
+                              HobbyName: item.hobbyName,
+                              Age: item.age
+                        });
+                })
+               
+                console.log("param", param);
+                RequestData('POST', '/Home/SaveData', `#submit`, null, param, function (data) {
+                    console.log(data);
+                    
+                });
+            });
+
+        })
+    </script>
+}
