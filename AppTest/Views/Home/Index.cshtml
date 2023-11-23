@@ -32,12 +32,12 @@
         <div class="col-md-12 mt-5">
             <div class="row">
                 <div class="col-md-6">
-                    <button class="btn btn-success" id="genrate">Generate Data</button>
+                    <button class="btn btn-success col-md-6" id="genrate">Generate Data</button>
 
                 </div>
 
                 <div class="col-md-6">
-                    <button class="btn btn-info" id="submit">Submit</button>
+                    <button class="btn btn-info col-md-6" id="submit">Submit</button>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
             $("#genrate").on("click", function () {
                 
                 //table.clear().draw();
-                RequestData('GET', '/Home/getData', `#to-type-ticket`, null, null, function (data) {
+                RequestData('GET', '/Home/getData', `#genrate`, null, null, function (data) {
                     console.log(data);
                     $(".body-table").remove();
                    

@@ -5,9 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-
 //conection string 
 var connectionString = builder.Configuration.GetConnectionString("DocumentManagementContextConnection") ?? throw new InvalidOperationException("Connection string 'DocumentManagementContextConnection' not found.");
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
@@ -27,6 +24,13 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = int.MaxValue;
 });
 
+builder.Services.AddMvc(opt=> 
+{
+    opt.MaxModelBindingCollectionSize = int.MaxValue;
+    
+});
+// Add services to the container.
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
